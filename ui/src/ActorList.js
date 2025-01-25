@@ -1,14 +1,14 @@
-import MovieListItem from "./MovieListItem";
+import ActorsListItem from "./ActorListItem";
 
-export default function MoviesList(props) {
+export default function ActorList(props) {
     return (
         <div>
-            <h2>Movies</h2>
-            <div className="movies-list">
-                {props.movies.map((movie) => (
+            <h2>Actors</h2>
+            <div className="actor-list">
+                {props.actors.map((actor) => (
                     <div
-                        key={movie.title}
-                        className="movie-item"
+                        key={actor.id}
+                        className="actor-item"
                         style={{
                             marginBottom: "8px",
                             border: "1px solid #ccc",
@@ -16,9 +16,9 @@ export default function MoviesList(props) {
                             borderRadius: "4px",
                         }}
                     >
-                        <MovieListItem
-                            movie={movie}
-                            onDelete={() => props.onDeleteMovie(movie)}
+                        <ActorsListItem
+                            actor={actor}
+                            onDelete={() => props.onDeleteActor(actor)}
                         />
                     </div>
                 ))}
