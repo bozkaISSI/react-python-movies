@@ -30,7 +30,16 @@ function App() {
             setMovies([...movies, movie]);
             setAddingMovie(false);
             }
+    }
+
+    async function handleDeleteMovie(movie) {
+        const response = await fetch(`/movies/${movie.id}`, {
+            method: 'DELETE'
+        });
+        if (response.ok) {
+            setMovies(movies.filter(m => m !== movie));
         }
+    }
 
     return (
         <div className="container">
@@ -38,7 +47,7 @@ function App() {
             {movies.length === 0
                 ? <p>No movies yet. Maybe add something?</p>
                 : <MoviesList movies={movies}
-                              onDeleteMovie={(movie) => setMovies(movies.filter(m => m !== movie))}
+                              onDeleteMovie={handleDeleteMovie}
                 />}
             {addingMovie
                 ? <MovieForm onMovieSubmit={handleAddMovie}
