@@ -36,7 +36,7 @@ def get_movie(movie_id: int):
 
 
 @app.delete("/movies/{movie_id}", response_model=schemas.Movie)
-def get_movie(movie_id: int):
+def delete_movie(movie_id: int):
     db_movie = models.Movie.filter(models.Movie.id == movie_id).first()
     if db_movie is None:
         raise HTTPException(status_code=404, detail="Movie not found")
