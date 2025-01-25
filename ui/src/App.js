@@ -1,5 +1,5 @@
 import './App.css';
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import "milligram";
 import MovieForm from "./MovieForm";
 import MoviesList from "./MoviesList";
@@ -8,9 +8,11 @@ import ActorList from "./ActorList";
 
 function App() {
     const [movies, setMovies] = useState([]);
-    const [addingMovie, setAddingMovie] = useState(false);
     const [actors, setActors] = useState([]);
+    const [addingMovie, setAddingMovie] = useState(false);
     const [addingActor, setAddingActor] = useState(false);
+    const [isLoadingMovies, setIsLoadingMovies] = useState(true);
+    const [isLoadingActors, setIsLoadingActors] = useState(true);
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -18,6 +20,7 @@ function App() {
             if (response.ok) {
                 const movies = await response.json();
                 setMovies(movies);
+                setIsLoadingMovies(false);
             }
         };
         fetchMovies();
@@ -27,6 +30,7 @@ function App() {
             if (response.ok) {
                 const actors = await response.json();
                 setActors(actors);
+                setIsLoadingActors(false);
             }
         };
         fetchActors();
@@ -78,33 +82,44 @@ function App() {
 
     return (
         <div className="container">
-            <div style={{padding: '0 1.0rem'}} className="row">
-                <h1 style={{color: '#9b4dca'}}>My favourite movies to watch</h1>
+            <div style={{ padding: '0 1.0rem' }} className="row">
+                <h1 style={{ color: '#9b4dca' }}>My favourite movies to watch</h1>
             </div>
             <div className="row">
                 <div className="column column-50">
-                    {movies.length === 0
-                        ? <p>No movies yet.</p>
-                        : <MoviesList movies={movies}
-                                      onDeleteMovie={handleDeleteMovie}
-                        />}
-                    {addingMovie
-                        ? <MovieForm onMovieSubmit={handleAddMovie}
-                                     buttonLabel="Add a movie"
-                        />
-                        : <button onClick={() => setAddingMovie(true)}>Add a movie</button>}
+                    {isLoadingMovies ? (
+                        <div className="lds-ripple">
+                            <div></div>
+                            <div></div>
+                        </div>
+                    ) : (
+                        <>
+                            {movies.length === 0
+                                ? <p>No movies yet.</p>
+                                : <MoviesList movies={movies} onDeleteMovie={handleDeleteMovie} />}
+                            {addingMovie
+                                ? <MovieForm onMovieSubmit={handleAddMovie} buttonLabel="Add a movie" />
+                                : <button onClick={() => setAddingMovie(true)}>Add a movie</button>}
+                        </>
+                    )}
                 </div>
+
                 <div className="column column-50">
-                    {actors.length === 0
-                        ? <p>No actors yet. Maybe add someone?</p>
-                        : <ActorList actors={actors}
-                                    onDeleteActor={handleDeleteActor}
-                        />}
-                    {addingActor
-                        ? <ActorForm onActorSubmit={handleAddActor}
-                                     buttonLabel="Add an actor"
-                        />
-                        : <button onClick={() => setAddingActor(true)}>Add an actor</button>}
+                    {isLoadingActors ? (
+                        <div className="lds-ripple">
+                            <div></div>
+                            <div></div>
+                        </div>
+                    ) : (
+                        <>
+                            {actors.length === 0
+                                ? <p>No actors yet. Maybe add someone?</p>
+                                : <ActorList actors={actors} onDeleteActor={handleDeleteActor} />}
+                            {addingActor
+                                ? <ActorForm onActorSubmit={handleAddActor} buttonLabel="Add an actor" />
+                                : <button onClick={() => setAddingActor(true)}>Add an actor</button>}
+                        </>
+                    )}
                 </div>
             </div>
         </div>
