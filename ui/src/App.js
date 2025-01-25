@@ -78,8 +78,8 @@ function App() {
 
     return (
         <div className="container">
-            <div className="row">
-                <h1>My favourite movies to watch</h1>
+            <div style={{padding: '0 1.0rem'}} className="row">
+                <h1 style={{color: '#9b4dca'}}>My favourite movies to watch</h1>
             </div>
             <div className="row">
                 <div className="column column-50">
