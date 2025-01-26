@@ -12,10 +12,10 @@ export default function ActorForm({ onActorSubmit, buttonLabel, isModalOpen, clo
     event.preventDefault();
 
     if (!name.trim()) {
-      return toast.error("Name is required.");
+      return toast.warning("Name is required.");
     }
     if (!surname.trim()) {
-      return toast.error("Surname is required.");
+      return toast.warning("Surname is required.");
     }
 
     onActorSubmit({ name, surname });

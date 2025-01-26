@@ -11,16 +11,16 @@ export default function MovieForm(props) {
         event.preventDefault();
 
         if (title.length < 5) {
-            return toast.error('Title must be at least 5 characters long');
+            return toast.warning('Title must be at least 5 characters long');
         }
         if (!year || isNaN(year) || year < 1900 || year > new Date().getFullYear()) {
-            return toast.error('Please provide a valid year between 1900 and the current year');
+            return toast.warning('Please provide a valid year between 1900 and the current year');
         }
         if (!director.trim()) {
-            return toast.error('Director name cannot be empty');
+            return toast.warning('Director name cannot be empty');
         }
         if (!description.trim()) {
-            return toast.error('Description cannot be empty');
+            return toast.warning('Description cannot be empty');
         }
 
         props.onMovieSubmit({ title, year, director, description });
