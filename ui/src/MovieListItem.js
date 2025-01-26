@@ -4,7 +4,7 @@ import { PiFilmSlateFill } from "react-icons/pi";
 export default function MovieListItem(props) {
     return (
         <div>
-            <div className='test'>
+            <div className='main-container'>
                 <div>
                     <PiFilmSlateFill />
                 <strong>{props.movie.title}</strong>

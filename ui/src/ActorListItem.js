@@ -4,7 +4,7 @@ import { PiFilmSlateFill } from "react-icons/pi";
 export default function ActorsListItem(props) {
     return (
         <div>
-            <div className='test'>
+            <div className='main-container'>
                 <div>
                     <span>{props.actor.name}</span>
                     {' '}
