@@ -85,10 +85,3 @@ code {
   border-radius: 4px;
 }
 
-.movie-item,
-.actor-item {
-  margin-bottom: 8px;
-  border: 1px solid #ccc;
-  padding: 8px;
-  border-radius: 4px;
-}
