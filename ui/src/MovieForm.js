@@ -25,6 +25,8 @@ export default function MovieForm(props) {
 
         props.onMovieSubmit({ title, year, director, description });
 
+        toast.success(`Movie "${title}" added successfully!`);
+
         setTitle('');
         setYear('');
         setDirector('');

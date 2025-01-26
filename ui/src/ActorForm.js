@@ -19,6 +19,9 @@ export default function ActorForm({ onActorSubmit, buttonLabel, isModalOpen, clo
     }
 
     onActorSubmit({ name, surname });
+
+    toast.success(`Actor ${name} ${surname} added successfully!`);
+
     setName('');
     setSurname('');
     closeModal();
