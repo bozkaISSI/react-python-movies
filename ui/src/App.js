@@ -65,6 +65,18 @@ function App() {
       <div className="row" style={{ padding: '0 1rem' }}>
         <h1 style={{ color: '#9b4dca' }}>My Favourite Movies to Watch</h1>
       </div>
+
+      <div className="row">
+        <div className="column column-100 search-input">
+          <input
+            type="text"
+            placeholder="Search for movies..."
+          />
+        </div>
+        <button>Search</button>
+
+      </div>
+
       <div className="row">
 
         <div className="column column-50" style={{ position: 'relative' }}>
