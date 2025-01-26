@@ -71,8 +71,7 @@ code {
   cursor: pointer;
 }
 
-.movie,
-.actor-item {
+.movie {
   display: flex;
   justify-content: center;
   align-items: center;
