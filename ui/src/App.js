@@ -60,6 +60,12 @@ function App() {
     }
   };
 
+  const openMovieForm = () => setAddingMovie(true);
+  const closeMovieForm = () => setAddingMovie(false);
+
+  const openActorForm = () => setAddingActor(true);
+  const closeActorForm = () => setAddingActor(false);
+
   return (
     <div className="container">
       <div className="row" style={{ padding: '0 1rem' }}>
@@ -74,11 +80,9 @@ function App() {
           />
         </div>
         <button>Search</button>
-
       </div>
 
       <div className="row">
-
         <div className="column column-50" style={{ position: 'relative' }}>
           {isLoadingMovies ? (
             <div className="lds-ripple">
@@ -90,13 +94,12 @@ function App() {
               {movies.length === 0 ? (
                 <p>No movies yet.</p>
               ) : (
-                <MoviesList movies={movies} onDeleteMovie={(movie) => deleteData('/movies', movie.id, setMovies, 'Error deleting movie')} />
+                <MoviesList
+                  movies={movies}
+                  onDeleteMovie={(movie) => deleteData('/movies', movie.id, setMovies, 'Error deleting movie')}
+                />
               )}
-              {addingMovie ? (
-                <MovieForm onMovieSubmit={(movie) => addData('/movies', movie, setMovies, setAddingMovie, 'Error adding movie')} buttonLabel="Add a movie" />
-              ) : (
-                <button onClick={() => setAddingMovie(true)}>Add a movie</button>
-              )}
+              <button onClick={openMovieForm}>Add a movie</button>
             </>
           )}
         </div>
@@ -112,17 +115,43 @@ function App() {
               {actors.length === 0 ? (
                 <p>No actors yet. Maybe add someone?</p>
               ) : (
-                <ActorList actors={actors} onDeleteActor={(actor) => deleteData('/actors', actor.id, setActors, 'Error deleting actor')} />
+                <ActorList
+                  actors={actors}
+                  onDeleteActor={(actor) => deleteData('/actors', actor.id, setActors, 'Error deleting actor')}
+                />
               )}
-              {addingActor ? (
-                <ActorForm onActorSubmit={(actor) => addData('/actors', actor, setActors, setAddingActor, 'Error adding actor')} buttonLabel="Add an actor" />
-              ) : (
-                <button onClick={() => setAddingActor(true)}>Add an actor</button>
-              )}
+              <button onClick={openActorForm}>Add an actor</button>
             </>
           )}
         </div>
       </div>
+
+      {addingMovie && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <MovieForm
+              onMovieSubmit={(movie) => addData('/movies', movie, setMovies, setAddingMovie, 'Error adding movie')}
+              buttonLabel="Add a Movie"
+            />
+            <button onClick={closeMovieForm}>Close</button>
+          </div>
+        </div>
+      )}
+
+      {addingActor && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <ActorForm
+              onActorSubmit={(actor) => addData('/actors', actor, setActors, setAddingActor, 'Error adding actor')}
+              buttonLabel="Add an Actor"
+              isModalOpen={addingActor}
+              closeModal={closeActorForm}
+            />
+            <button onClick={closeActorForm}>Close</button>
+          </div>
+        </div>
+      )}
+
       <ToastContainer />
     </div>
   );

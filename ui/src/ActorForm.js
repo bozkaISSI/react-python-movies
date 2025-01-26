@@ -1,42 +1,64 @@
 import { useState } from "react";
+import Modal from "react-modal";
+import { toast } from "react-toastify";
 
-export default function ActorForm(props) {
-    const [name, setName] = useState('');
-    const [surname, setSurname] = useState('');
+Modal.setAppElement("#root");
 
-    function addActor(event) {
-        event.preventDefault();
-        if (!name.trim()) {
-            return alert('Name is too short');
-        }
-        if (!surname.trim()) {
-            return alert('Surname is too short');
-        }
-        props.onActorSubmit({ name, surname });
-        setName('');
-        setSurname('');
+export default function ActorForm({ onActorSubmit, buttonLabel, isModalOpen, closeModal }) {
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+
+  function addActor(event) {
+    event.preventDefault();
+
+    if (!name.trim()) {
+      return toast.error("Name is required.");
+    }
+    if (!surname.trim()) {
+      return toast.error("Surname is required.");
     }
 
-    return (
-        <form onSubmit={addActor}>
-            <h2>Add Actor</h2>
-            <div>
-                <label>Name</label>
-                <input
-                    type="text"
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                />
-            </div>
-            <div>
-                <label>Surname</label>
-                <input
-                    type="text"
-                    value={surname}
-                    onChange={(event) => setSurname(event.target.value)}
-                />
-            </div>
-            <button>{props.buttonLabel || 'Submit'}</button>
-        </form>
-    );
+    onActorSubmit({ name, surname });
+    setName('');
+    setSurname('');
+    closeModal();
+  }
+
+  return (
+    <Modal
+      isOpen={isModalOpen}
+      onRequestClose={closeModal}
+      contentLabel="Add Actor"
+      className="modal-content"
+      overlayClassName="modal-overlay"
+    >
+      <form onSubmit={addActor}>
+        <h2>Add Actor</h2>
+
+        <div>
+          <label>Name</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            placeholder="Enter actor's first name"
+          />
+        </div>
+
+        <div>
+          <label>Surname</label>
+          <input
+            type="text"
+            value={surname}
+            onChange={(event) => setSurname(event.target.value)}
+            placeholder="Enter actor's surname"
+          />
+        </div>
+
+        <div style={{ marginTop: "10px" }}>
+          <button type="submit">{buttonLabel || "Submit"}</button>
+        </div>
+      </form>
+    </Modal>
+  );
 }
