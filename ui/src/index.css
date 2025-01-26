@@ -11,7 +11,6 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-/* Ripple Loader */
 .lds-ripple {
   display: inline-block;
   position: relative;
@@ -57,7 +56,6 @@ code {
   }
 }
 
-/* Layout and Components */
 .main-container {
   display: flex;
   justify-content: space-between;
@@ -70,10 +68,28 @@ code {
   align-items: center;
   margin-left: 5px;
   color: #9b4dca;
+  cursor: pointer;
 }
 
-.movie {
+.movie,
+.actor-item {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.movie-item,
+.actor-item {
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.movie-item,
+.actor-item {
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 4px;
 }
