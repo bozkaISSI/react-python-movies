@@ -83,7 +83,7 @@ function App() {
       </div>
 
       <div className="row">
-        <div className="column column-50" style={{ position: 'relative' }}>
+        <div className="column column-100" style={{ position: 'relative' }}>
           {isLoadingMovies ? (
             <div className="lds-ripple">
               <div></div>
@@ -104,7 +104,7 @@ function App() {
           )}
         </div>
 
-        <div className="column column-50" style={{ position: 'relative' }}>
+        <div className="column column-100" style={{ position: 'relative' }}>
           {isLoadingActors ? (
             <div className="lds-ripple">
               <div></div>
