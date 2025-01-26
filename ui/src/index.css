@@ -85,3 +85,31 @@ code {
   border-radius: 4px;
 }
 
+.react-confirm-alert-button-group button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+.react-confirm-alert-button-group button:first-child {
+  background-color: #9b4dca;
+  color: white;
+  padding: 0 18px;
+}
+
+.react-confirm-alert-button-group button:last-child {
+  background-color: #ccc;
+  color: black;
+  padding: 0 18px;
+}
+
+.react-confirm-alert-button-group button:hover {
+  opacity: 0.8;
+}
+
