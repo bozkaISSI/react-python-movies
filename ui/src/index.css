@@ -63,6 +63,21 @@ code {
   }
 }
 
+.test {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.button-delete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5px;
+  color: #9b4dca;
+
+}
 
 
 
