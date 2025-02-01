@@ -144,18 +144,15 @@ code {
   opacity: 0.8;
 }
 
-/* Change tooltip background and text color */
 .react-tooltip {
-  background-color: #ccc !important; /* Light gray background */
-  color: black !important; /* Black text */
+  background-color: #ccc !important;
+  color: black !important;
   padding: 8px 12px;
   border-radius: 5px;
   font-size: 14px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Optional: Customize the tooltip arrow */
 .react-tooltip::after {
   border-top-color: #ccc !important;
 }
-
