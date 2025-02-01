@@ -4,9 +4,14 @@ import { toast } from "react-toastify";
 
 Modal.setAppElement("#root");
 
-export default function ActorForm({ onActorSubmit, buttonLabel, isModalOpen, closeModal }) {
-  const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
+export default function ActorForm({
+  onActorSubmit,
+  buttonLabel,
+  isModalOpen,
+  closeModal,
+}) {
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
 
   function addActor(event) {
     event.preventDefault();
@@ -22,8 +27,8 @@ export default function ActorForm({ onActorSubmit, buttonLabel, isModalOpen, clo
 
     toast.success(`Actor ${name} ${surname} added successfully!`);
 
-    setName('');
-    setSurname('');
+    setName("");
+    setSurname("");
     closeModal();
   }
 
