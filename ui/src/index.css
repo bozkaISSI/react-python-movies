@@ -98,6 +98,15 @@ code {
   cursor: pointer;
 }
 
+.button-movie-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 15px;
+  color: #257ed6;
+  cursor: pointer;
+}
+
 .movie {
   display: flex;
   justify-content: center;
@@ -155,4 +164,16 @@ code {
 
 .react-tooltip::after {
   border-top-color: #ccc !important;
+}
+
+.react-tooltip ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.react-tooltip li {
+  margin: 5px 0;
+  font-size: 14px;
+  line-height: 1.5;
 }
