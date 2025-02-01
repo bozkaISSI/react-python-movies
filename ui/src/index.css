@@ -80,6 +80,15 @@ code {
   color: #1976d2;
   cursor: pointer;
 }
+
+.button-add-to-movie {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
 .button-delete {
   display: flex;
   justify-content: center;

@@ -1,6 +1,8 @@
 import { FaTrashAlt } from "react-icons/fa";
 import { confirmAlert } from "react-confirm-alert";
 import { Tooltip } from 'react-tooltip';
+
+import { FaPlus } from "react-icons/fa";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
 export default function ActorsListItem({ actor, onDelete }) {
@@ -26,10 +28,18 @@ export default function ActorsListItem({ actor, onDelete }) {
         <div>
           <span>{actor.name}</span> <strong>{actor.surname}</strong>
         </div>
-        <div className="button-delete" onClick={handleDelete} data-tooltip-id="delete-tooltip">
-          <FaTrashAlt/>
-          <Tooltip id="delete-tooltip" place="top" content="Delete Movie"/>
+        <div className="buttons">
+          <div className="button-add-to-movie" data-tooltip-id="add-to-movie-tooltip">
+
+            <FaPlus/>
+            <Tooltip id="add-to-movie-tooltip" place="top" content="Add to Movie"/>
+          </div>
+          <div className="button-delete" onClick={handleDelete} data-tooltip-id="delete-tooltip">
+            <FaTrashAlt/>
+            <Tooltip id="delete-tooltip" place="top" content="Delete Movie"/>
+          </div>
         </div>
+
       </div>
   );
 }

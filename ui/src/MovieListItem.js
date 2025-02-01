@@ -32,6 +32,7 @@ export default function MovieListItem({ movie, onDelete, onEdit }) {
           </div>
         </div>
         <div className="buttons">
+
           <div className="button-edit" onClick={() => onEdit(movie)} data-tooltip-id="edit-tooltip">
             <FaPen/>
             <Tooltip id="edit-tooltip" place="top" content="Edit Movie"/>
