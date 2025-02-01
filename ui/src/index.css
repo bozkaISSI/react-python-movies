@@ -1,14 +1,16 @@
 /* Global Styles */
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
 
 .lds-ripple {
@@ -62,12 +64,24 @@ code {
   align-items: center;
 }
 
+.buttons {
+  display: flex;
+}
+
+.button-edit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  color: #1976d2;
+  cursor: pointer;
+}
 .button-delete {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-left: 5px;
-  color: #9b4dca;
+  color: #d32f2f;
   cursor: pointer;
 }
 
@@ -80,7 +94,7 @@ code {
 .movie-item,
 .actor-item {
   margin-bottom: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #E1BEE7;
   padding: 8px;
   border-radius: 4px;
 }
@@ -116,4 +130,3 @@ code {
 .react-confirm-alert-button-group button:hover {
   opacity: 0.8;
 }
-

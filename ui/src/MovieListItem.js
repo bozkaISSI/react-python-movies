@@ -1,9 +1,10 @@
 import { FaTrashAlt } from "react-icons/fa";
 import { PiFilmSlateFill } from "react-icons/pi";
+import { FaPen } from "react-icons/fa";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
-export default function MovieListItem({ movie, onDelete }) {
+export default function MovieListItem({ movie, onDelete, onEdit }) {
   const handleDelete = () => {
     confirmAlert({
       title: "Confirm Delete",
@@ -24,14 +25,20 @@ export default function MovieListItem({ movie, onDelete }) {
   return (
     <div className="main-container">
       <div className="movie">
-        <PiFilmSlateFill />
         <div>
-          <strong>{movie.title}</strong> <span>({movie.year})</span> directed by{" "}
-          {movie.director} {movie.description}
+          <strong>{movie.title}</strong>
+          <span>({movie.year})</span>
+          directed by {movie.director} {movie.description}
         </div>
       </div>
-      <div className="button-delete" onClick={handleDelete}>
-        <FaTrashAlt />
+      <div className="buttons">
+        <div className="button-edit" onClick={() => onEdit(movie)}>
+          <FaPen />
+        </div>
+
+        <div className="button-delete" onClick={handleDelete}>
+          <FaTrashAlt />
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { FaTrashAlt } from "react-icons/fa";
 import { confirmAlert } from "react-confirm-alert";
-import "react-confirm-alert/src/react-confirm-alert.css"; // Import default styles
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 export default function ActorsListItem({ actor, onDelete }) {
   const handleDelete = () => {

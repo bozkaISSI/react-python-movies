@@ -1,9 +1,7 @@
 from typing import List
-
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-
 import schemas
 import models
 
@@ -18,13 +16,14 @@ def serve_react_app():
 
 @app.get("/movies", response_model=List[schemas.Movie])
 def get_movies():
+    # Ensure you use the correct Peewee query method
     return list(models.Movie.select())
 
 
 @app.post("/movies", response_model=schemas.Movie)
 def add_movie(movie: schemas.MovieBase):
-    movie = models.Movie.create(**movie.dict())
-    return movie
+    movie_obj = models.Movie.create(**movie.dict())
+    return movie_obj
 
 
 @app.get("/movies/{movie_id}", response_model=schemas.Movie)
@@ -35,12 +34,33 @@ def get_movie(movie_id: int):
     return db_movie
 
 
+import logging
+
+
+@app.put("/movies/{movie_id}", response_model=schemas.Movie)
+def update_movie(movie_id: int, movie: schemas.MovieBase):
+    db_movie: models.Movie = models.Movie.filter(models.Movie.id == movie_id).first()
+    if db_movie is None:
+        raise HTTPException(status_code=404, detail="Movie not found")
+
+    # Update the fields in the instance
+    db_movie.title = movie.title
+    db_movie.director = movie.director
+    db_movie.year = movie.year
+    db_movie.description = movie.description
+    # Add more fields as necessary
+
+    # Save the updated instance back to the database
+    db_movie.save()
+    return db_movie
+
+
 @app.delete("/movies/{movie_id}", response_model=schemas.Movie)
 def delete_movie(movie_id: int):
     db_movie = models.Movie.filter(models.Movie.id == movie_id).first()
     if db_movie is None:
         raise HTTPException(status_code=404, detail="Movie not found")
-    db_movie.delete_instance()
+    db_movie.delete_instance()  # Delete the movie
     return db_movie
 
 
@@ -51,8 +71,8 @@ def get_actors():
 
 @app.post("/actors", response_model=schemas.Actor)
 def add_actor(actor: schemas.ActorBase):
-    actor = models.Actor.create(**actor.dict())
-    return actor
+    actor_obj = models.Actor.create(**actor.dict())
+    return actor_obj
 
 
 @app.get("/actors/{actor_id}", response_model=schemas.Actor)
@@ -68,5 +88,5 @@ def delete_actor(actor_id: int):
     db_actor = models.Actor.filter(models.Actor.id == actor_id).first()
     if db_actor is None:
         raise HTTPException(status_code=404, detail="Actor not found")
-    db_actor.delete_instance()
+    db_actor.delete_instance()  # Delete actor
     return db_actor
