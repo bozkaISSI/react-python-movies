@@ -1,12 +1,23 @@
+import { useState, useEffect } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import { FaFilm } from "react-icons/fa6";
 import { confirmAlert } from "react-confirm-alert";
 import { Tooltip } from "react-tooltip";
-
 import { FaPlus } from "react-icons/fa";
+import Modal from "react-modal";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
+// Example movie list - mock
+const movieList = [
+  { id: 1, title: "Movie 1" },
+  { id: 2, title: "Movie 2" },
+  { id: 3, title: "Movie 3" },
+];
+
 export default function ActorsListItem({ actor, onDelete }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedMovies, setSelectedMovies] = useState([1, 3]);
+
   const handleDelete = () => {
     confirmAlert({
       title: "Confirm Delete",
@@ -24,6 +35,20 @@ export default function ActorsListItem({ actor, onDelete }) {
     });
   };
 
+  const handleCheckboxChange = (e) => {
+    const movieId = parseInt(e.target.value);
+    setSelectedMovies((prevSelectedMovies) =>
+      prevSelectedMovies.includes(movieId)
+        ? prevSelectedMovies.filter((id) => id !== movieId)
+        : [...prevSelectedMovies, movieId]
+    );
+  };
+
+  const handleAddMoviesToActor = () => {
+    console.log("Movies selected for actor:", selectedMovies);
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="main-container">
       <div className="buttons">
@@ -39,17 +64,15 @@ export default function ActorsListItem({ actor, onDelete }) {
           </Tooltip>
         </div>
       </div>
+
       <div className="buttons">
         <div
           className="button-add-to-movie"
+          onClick={() => setIsModalOpen(true)}
           data-tooltip-id="add-to-movie-tooltip"
         >
           <FaPlus />
-          <Tooltip
-            id="add-to-movie-tooltip"
-            place="top"
-            content="Add to Movie"
-          />
+          <Tooltip id="add-to-movie-tooltip" place="top" content="Add to Movie" />
         </div>
         <div
           className="button-delete"
@@ -57,9 +80,38 @@ export default function ActorsListItem({ actor, onDelete }) {
           data-tooltip-id="delete-tooltip"
         >
           <FaTrashAlt />
-          <Tooltip id="delete-tooltip" place="top" content="Delete Movie" />
+          <Tooltip id="delete-tooltip" place="top" content="Delete Actor" />
         </div>
       </div>
+
+      {/* Modal for movie selection */}
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        contentLabel="Select Movies"
+        ariaHideApp={false}
+        className="movie-modal"
+        overlayClassName="movie-overlay"
+      >
+        <h2>Select Movies for {actor.name}</h2>
+        <div className="movie-list">
+          {movieList.map((movie) => (
+            <div key={movie.id} className="movie-list-form">
+              <input
+                type="checkbox"
+                value={movie.id}
+                onChange={handleCheckboxChange}
+                checked={selectedMovies.includes(movie.id)}
+              />
+              <label>{movie.title}</label>
+            </div>
+          ))}
+        </div>
+        <div className="modal-buttons">
+          <button onClick={handleAddMoviesToActor}>Add Movies</button>
+          <button onClick={() => setIsModalOpen(false)}>Cancel</button>
+        </div>
+      </Modal>
     </div>
   );
 }
