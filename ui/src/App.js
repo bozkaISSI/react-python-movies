@@ -94,6 +94,13 @@ function App() {
       </div>
 
       <div className="row">
+        <div className="column column-100 search-input">
+          <input type="text" placeholder="Search for movies..." />
+        </div>
+        <button>Search</button>
+      </div>
+
+      <div className="row">
         <div className="column column-100" style={{ position: "relative" }}>
           {isLoadingMovies ? (
             <div className="lds-ripple">

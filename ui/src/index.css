@@ -58,6 +58,10 @@ code {
   }
 }
 
+.search-input {
+  display: flex;
+}
+
 .main-container {
   display: flex;
   justify-content: space-between;
@@ -94,7 +98,7 @@ code {
 .movie-item,
 .actor-item {
   margin-bottom: 8px;
-  border: 1px solid #E1BEE7;
+  border: 1px solid #e1bee7;
   padding: 8px;
   border-radius: 4px;
 }
