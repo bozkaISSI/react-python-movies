@@ -1,22 +1,30 @@
 import { useState, useEffect } from "react";
-import { FaTrashAlt } from "react-icons/fa";
-import { FaFilm } from "react-icons/fa6";
+import { FaTrashAlt, FaFilm, FaPlus } from "react-icons/fa";
 import { confirmAlert } from "react-confirm-alert";
 import { Tooltip } from "react-tooltip";
-import { FaPlus } from "react-icons/fa";
 import Modal from "react-modal";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
-// Example movie list - mock
-const movieList = [
-  { id: 1, title: "Movie 1" },
-  { id: 2, title: "Movie 2" },
-  { id: 3, title: "Movie 3" },
-];
-
 export default function ActorsListItem({ actor, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedMovies, setSelectedMovies] = useState([1, 3]);
+  const [selectedMovies, setSelectedMovies] = useState([]);
+  const [movies, setMovies] = useState([]);
+
+  // Fetch movies from backend API
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const response = await fetch("/movies");
+        if (!response.ok) throw new Error("Failed to fetch movies");
+        const data = await response.json();
+        setMovies(data);
+      } catch (error) {
+        console.error("Error fetching movies:", error);
+      }
+    };
+
+    fetchMovies();
+  }, []);
 
   const handleDelete = () => {
     confirmAlert({
@@ -29,7 +37,6 @@ export default function ActorsListItem({ actor, onDelete }) {
         },
         {
           label: "No",
-          onClick: () => {},
         },
       ],
     });
@@ -37,10 +44,10 @@ export default function ActorsListItem({ actor, onDelete }) {
 
   const handleCheckboxChange = (e) => {
     const movieId = parseInt(e.target.value);
-    setSelectedMovies((prevSelectedMovies) =>
-      prevSelectedMovies.includes(movieId)
-        ? prevSelectedMovies.filter((id) => id !== movieId)
-        : [...prevSelectedMovies, movieId]
+    setSelectedMovies((prev) =>
+      prev.includes(movieId)
+        ? prev.filter((id) => id !== movieId)
+        : [...prev, movieId],
     );
   };
 
@@ -57,9 +64,11 @@ export default function ActorsListItem({ actor, onDelete }) {
           <FaFilm />
           <Tooltip id="movie-list-tooltip" place="right">
             <ul>
-              <li>Movie 1</li>
-              <li>Movie 2</li>
-              <li>Movie 3</li>
+              {movies.length > 0 ? (
+                movies.map((movie) => <li key={movie.id}>{movie.title}</li>)
+              ) : (
+                <li>No movies available</li>
+              )}
             </ul>
           </Tooltip>
         </div>
@@ -72,7 +81,11 @@ export default function ActorsListItem({ actor, onDelete }) {
           data-tooltip-id="add-to-movie-tooltip"
         >
           <FaPlus />
-          <Tooltip id="add-to-movie-tooltip" place="top" content="Add to Movie" />
+          <Tooltip
+            id="add-to-movie-tooltip"
+            place="top"
+            content="Add to Movie"
+          />
         </div>
         <div
           className="button-delete"
@@ -95,7 +108,7 @@ export default function ActorsListItem({ actor, onDelete }) {
       >
         <h2>Select Movies for {actor.name}</h2>
         <div className="movie-list">
-          {movieList.map((movie) => (
+          {movies.map((movie) => (
             <div key={movie.id} className="movie-list-form">
               <input
                 type="checkbox"
@@ -107,6 +120,7 @@ export default function ActorsListItem({ actor, onDelete }) {
             </div>
           ))}
         </div>
+
         <div className="modal-buttons">
           <button onClick={handleAddMoviesToActor}>Add Movies</button>
           <button onClick={() => setIsModalOpen(false)}>Cancel</button>

@@ -201,14 +201,12 @@ code {
   box-sizing: border-box;
 }
 
-
 .movie-list {
   display: flex;
   flex-direction: column;
   max-height: 300px;
   overflow-y: auto;
 }
-
 
 .modal-buttons {
   display: flex;
@@ -221,9 +219,16 @@ code {
 }
 
 .movie-list-form {
-  margin-bottom: 0;
   display: flex;
   align-items: center;
+  gap: 8px;
+}
+
+.movie-list-form input {
+  width: 16px;
+  height: 16px;
+  margin-bottom: 0;
+  accent-color: #9b4dca;
 }
 
 .movie-list-form input {
@@ -233,4 +238,3 @@ code {
 .movie-list-form label {
   margin-bottom: 0;
 }
-
