@@ -62,6 +62,9 @@ The backend is built using FastAPI and provides the API endpoints for movies and
 - `GET /actors/{actor_id}` - Retrieve a specific actor by ID
 - `DELETE /actors/{actor_id}` - Delete an actor by ID
 
+#### Actors & Movies Relationship
+- `GET /actors/{actor_id}/movies` - Get movies assigned to an actor
+- `POST /actors/{actor_id}/movies` - Assign movies to an actor
 ---
 
 ## Frontend Setup
@@ -149,9 +152,24 @@ The frontend is a React application that consumes the FastAPI backend.
 2. Fill out the movie details in the form.
 3. Submit the form to see the movie added to the list.
 
+### Updating a Movie
+1. Click on the "Edit" button next to a movie.
+2. Modify the movie details.
+3. Save changes.
+
 ### Adding an Actor
 
 1. Click on the "Add an actor" button.
 2. Fill out the actor details in the form.
 3. Submit the form to see the actor added to the list.
 
+### Assigning Movies to an Actor
+1. Click on an actor from the list.
+2. Select movies to assign.
+3. Click "Save" to associate the movies with the actor.
+
+---
+
+Future Improvements
+
+🔜 Improve movie/actor search
