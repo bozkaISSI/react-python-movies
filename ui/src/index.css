@@ -1,3 +1,28 @@
+/* Define Color Variables */
+:root {
+  /* Primary Colors */
+  --primary-color: #1976d2;
+  --secondary-color: #d32f2f;
+  --tertiary-color: #257ed6;
+
+  /* Background & Text Colors */
+  --background-color: #ffffff;
+  --text-color: #000000;
+
+  /* Border Colors */
+  --border-color: #e1bee7;
+  --border-hover-color: #1976d2;
+
+  /* Tooltip Colors */
+  --tooltip-bg-color: #ccc;
+  --tooltip-text-color: #000;
+
+  /* Button Colors */
+  --button-bg-color: #9b4dca;
+  --button-text-color: white;
+  --button-hover-opacity: 0.8;
+}
+
 /* Global Styles */
 body {
   margin: 0;
@@ -6,6 +31,8 @@ body {
     "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 code {
@@ -58,6 +85,7 @@ code {
   }
 }
 
+/* Layout Styles */
 .search-input {
   display: flex;
 }
@@ -72,14 +100,17 @@ code {
   display: flex;
 }
 
+/* Button Styles */
 .button-edit {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-right: 10px;
   margin-left: 10px;
-  color: #1976d2;
+  color: var(--primary-color);
   cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 
 .button-add-to-movie {
@@ -88,6 +119,8 @@ code {
   align-items: center;
   margin-right: 15px;
   cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 
 .button-delete {
@@ -95,8 +128,10 @@ code {
   justify-content: center;
   align-items: center;
   margin-left: 5px;
-  color: #d32f2f;
+  color: var(--secondary-color);
   cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 
 .button-movie-list {
@@ -104,20 +139,17 @@ code {
   justify-content: center;
   align-items: center;
   margin-left: 15px;
-  color: #257ed6;
+  color: var(--tertiary-color);
   cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 
-.movie {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
+/* Movie and Actor Item Styles */
 .movie-item,
 .actor-item {
   margin-bottom: 8px;
-  border: 1px solid #e1bee7;
+  border: 1px solid var(--border-color);
   padding: 8px;
   border-radius: 4px;
 }
@@ -130,6 +162,7 @@ code {
   display: flex;
 }
 
+/* Confirmation Alert Buttons */
 .react-confirm-alert-button-group button {
   display: inline-flex;
   align-items: center;
@@ -143,8 +176,8 @@ code {
 }
 
 .react-confirm-alert-button-group button:first-child {
-  background-color: #9b4dca;
-  color: white;
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
   padding: 0 18px;
 }
 
@@ -155,20 +188,20 @@ code {
 }
 
 .react-confirm-alert-button-group button:hover {
-  opacity: 0.8;
+  opacity: var(--button-hover-opacity);
 }
 
+/* Tooltip Styles */
 .react-tooltip {
-  background-color: #ccc !important;
-  color: black !important;
+  background-color: var(--tooltip-bg-color) !important;
+  color: var(--tooltip-text-color) !important;
   padding: 8px 12px;
   border-radius: 5px;
   font-size: 14px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .react-tooltip::after {
-  border-top-color: #ccc !important;
+  border-top-color: var(--tooltip-bg-color) !important;
 }
 
 .react-tooltip ul {
@@ -183,6 +216,7 @@ code {
   line-height: 1.5;
 }
 
+/* Modal and Overlay Styles */
 .movie-overlay {
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
@@ -196,7 +230,7 @@ code {
 }
 
 .movie-modal {
-  background-color: white;
+  background-color: var(--background-color);
   padding: 20px;
   border-radius: 10px;
   width: 600px;
@@ -212,6 +246,10 @@ code {
   overflow-y: auto;
 }
 
+.movie-year {
+  margin: 0 8px;
+}
+
 .modal-buttons {
   display: flex;
   justify-content: space-between;
@@ -222,6 +260,7 @@ code {
   cursor: pointer;
 }
 
+/* Movie List Form */
 .movie-list-form {
   display: flex;
   align-items: center;
@@ -232,7 +271,7 @@ code {
   width: 16px;
   height: 16px;
   margin-bottom: 0;
-  accent-color: #9b4dca;
+  accent-color: var(--button-bg-color);
 }
 
 .movie-list-form input {

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { FaTrashAlt, FaFilm, FaPlus } from "react-icons/fa";
 import { Tooltip } from "react-tooltip";
 import Modal from "react-modal";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 export default function ActorsListItem({ actor, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -64,10 +66,27 @@ export default function ActorsListItem({ actor, onDelete }) {
     }
   };
 
+  const handleDelete = () => {
+    confirmAlert({
+      title: "Confirm Delete",
+      message: `Are you sure you want to delete ${actor.name} ${actor.surname}?`,
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => onDelete(actor.id), // Pass the actor id to the onDelete function
+        },
+        {
+          label: "No",
+          onClick: () => {},
+        },
+      ],
+    });
+  };
+
   return (
     <div className="main-container">
       <div className="buttons">
-        <span>{actor.name}</span>{" "}
+        <span>{actor.name}</span>
         <strong className="actor-surname">{actor.surname}</strong>
         <div
           className="button-movie-list"
@@ -108,7 +127,7 @@ export default function ActorsListItem({ actor, onDelete }) {
         </div>
         <div
           className="button-delete"
-          onClick={onDelete}
+          onClick={handleDelete}
           data-tooltip-id={`delete-tooltip-${actor.id}`}
         >
           <FaTrashAlt />

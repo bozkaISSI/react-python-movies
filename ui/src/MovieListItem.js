@@ -27,7 +27,7 @@ export default function MovieListItem({ movie, onDelete, onEdit }) {
       <div className="movie">
         <div>
           <strong>{movie.title}</strong>
-          <span>({movie.year})</span>
+          <span className="movie-year">({movie.year})</span>
           directed by {movie.director} {movie.description}
         </div>
       </div>
