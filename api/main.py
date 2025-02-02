@@ -16,7 +16,7 @@ def serve_react_app():
 
 @app.get("/movies", response_model=List[schemas.Movie])
 def get_movies():
-    # Ensure you use the correct Peewee query method
+
     return list(models.Movie.select())
 
 
@@ -43,14 +43,11 @@ def update_movie(movie_id: int, movie: schemas.MovieBase):
     if db_movie is None:
         raise HTTPException(status_code=404, detail="Movie not found")
 
-    # Update the fields in the instance
     db_movie.title = movie.title
     db_movie.director = movie.director
     db_movie.year = movie.year
     db_movie.description = movie.description
-    # Add more fields as necessary
 
-    # Save the updated instance back to the database
     db_movie.save()
     return db_movie
 
@@ -90,3 +87,35 @@ def delete_actor(actor_id: int):
         raise HTTPException(status_code=404, detail="Actor not found")
     db_actor.delete_instance()  # Delete actor
     return db_actor
+
+
+@app.get("/actors/{actor_id}/movies", response_model=List[schemas.Movie])
+def get_actor_movies(actor_id: int):
+    db_actor = models.Actor.filter(models.Actor.id == actor_id).first()
+    if db_actor is None:
+        raise HTTPException(status_code=404, detail="Actor not found")
+
+    return list(db_actor.movies)
+
+from pydantic import BaseModel
+from typing import List
+
+class AssignMoviesRequest(BaseModel):
+    movieIds: List[int]
+
+@app.post("/actors/{actor_id}/movies")
+def assign_movies_to_actor(actor_id: int, request: AssignMoviesRequest):
+    db_actor = models.Actor.filter(models.Actor.id == actor_id).first()
+    if db_actor is None:
+        raise HTTPException(status_code=404, detail="Actor not found")
+
+    movies = list(models.Movie.select().where(models.Movie.id.in_(request.movieIds)))
+
+    # Clear existing movies and add new ones
+    db_actor.movies.clear()
+    for movie in movies:
+        db_actor.movies.add(movie)
+
+    return {"message": f"Movies assigned to actor {db_actor.name} {db_actor.surname}"}
+
+

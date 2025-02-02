@@ -1,16 +1,13 @@
 import { useState, useEffect } from "react";
 import { FaTrashAlt, FaFilm, FaPlus } from "react-icons/fa";
-import { confirmAlert } from "react-confirm-alert";
 import { Tooltip } from "react-tooltip";
 import Modal from "react-modal";
-import "react-confirm-alert/src/react-confirm-alert.css";
 
 export default function ActorsListItem({ actor, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMovies, setSelectedMovies] = useState([]);
   const [movies, setMovies] = useState([]);
 
-  // Fetch movies from backend API
   useEffect(() => {
     const fetchMovies = async () => {
       try {
@@ -23,24 +20,20 @@ export default function ActorsListItem({ actor, onDelete }) {
       }
     };
 
-    fetchMovies();
-  }, []);
+    const fetchActorMovies = async () => {
+      try {
+        const response = await fetch(`/actors/${actor.id}/movies`);
+        if (!response.ok) throw new Error("Failed to fetch actor movies");
+        const data = await response.json();
+        setSelectedMovies(data.map((movie) => movie.id));
+      } catch (error) {
+        console.error("Error fetching actor movies:", error);
+      }
+    };
 
-  const handleDelete = () => {
-    confirmAlert({
-      title: "Confirm Delete",
-      message: `Are you sure you want to delete "${actor.name} ${actor.surname}"?`,
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => onDelete(),
-        },
-        {
-          label: "No",
-        },
-      ],
-    });
-  };
+    fetchMovies();
+    fetchActorMovies();
+  }, [actor.id]);
 
   const handleCheckboxChange = (e) => {
     const movieId = parseInt(e.target.value);
@@ -51,23 +44,49 @@ export default function ActorsListItem({ actor, onDelete }) {
     );
   };
 
-  const handleAddMoviesToActor = () => {
-    console.log("Movies selected for actor:", selectedMovies);
-    setIsModalOpen(false);
+  const handleAddMoviesToActor = async () => {
+    try {
+      const response = await fetch(`/actors/${actor.id}/movies`, {
+        method: "POST",
+        body: JSON.stringify({ movieIds: selectedMovies }),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!response.ok) throw new Error("Failed to update actor movies");
+
+      const updatedMoviesResponse = await fetch(`/actors/${actor.id}/movies`);
+      const updatedMovies = await updatedMoviesResponse.json();
+
+      setSelectedMovies(updatedMovies.map((movie) => movie.id));
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Error updating actor movies:", error);
+    }
   };
 
   return (
     <div className="main-container">
       <div className="buttons">
-        <span>{actor.name}</span> <strong>{actor.surname}</strong>
-        <div className="button-movie-list" data-tooltip-id="movie-list-tooltip">
+        <span>{actor.name}</span>{" "}
+        <strong className="actor-surname">{actor.surname}</strong>
+        <div
+          className="button-movie-list"
+          data-tooltip-id={`movie-list-tooltip-${actor.id}`}
+        >
           <FaFilm />
-          <Tooltip id="movie-list-tooltip" place="right">
+          <Tooltip id={`movie-list-tooltip-${actor.id}`} place="right">
             <ul>
-              {movies.length > 0 ? (
-                movies.map((movie) => <li key={movie.id}>{movie.title}</li>)
+              {selectedMovies.length === 0 ? (
+                <li>No movies selected</li>
               ) : (
-                <li>No movies available</li>
+                selectedMovies.map((movieId) => {
+                  const movie = movies.find((m) => m.id === movieId);
+                  return (
+                    <li key={movieId}>
+                      {movie ? movie.title : "Unknown Movie"}
+                    </li>
+                  );
+                })
               )}
             </ul>
           </Tooltip>
@@ -78,26 +97,29 @@ export default function ActorsListItem({ actor, onDelete }) {
         <div
           className="button-add-to-movie"
           onClick={() => setIsModalOpen(true)}
-          data-tooltip-id="add-to-movie-tooltip"
+          data-tooltip-id={`add-to-movie-tooltip-${actor.id}`}
         >
           <FaPlus />
           <Tooltip
-            id="add-to-movie-tooltip"
+            id={`add-to-movie-tooltip-${actor.id}`}
             place="top"
             content="Add to Movie"
           />
         </div>
         <div
           className="button-delete"
-          onClick={handleDelete}
-          data-tooltip-id="delete-tooltip"
+          onClick={onDelete}
+          data-tooltip-id={`delete-tooltip-${actor.id}`}
         >
           <FaTrashAlt />
-          <Tooltip id="delete-tooltip" place="top" content="Delete Actor" />
+          <Tooltip
+            id={`delete-tooltip-${actor.id}`}
+            place="top"
+            content="Delete Actor"
+          />
         </div>
       </div>
 
-      {/* Modal for movie selection */}
       <Modal
         isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}
@@ -120,9 +142,8 @@ export default function ActorsListItem({ actor, onDelete }) {
             </div>
           ))}
         </div>
-
         <div className="modal-buttons">
-          <button onClick={handleAddMoviesToActor}>Add Movies</button>
+          <button onClick={handleAddMoviesToActor}>Save Movies</button>
           <button onClick={() => setIsModalOpen(false)}>Cancel</button>
         </div>
       </Modal>
