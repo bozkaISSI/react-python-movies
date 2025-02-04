@@ -99,11 +99,13 @@ code {
 .buttons {
   display: flex;
   gap: 5px;
+  margin-left: 10px;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
 }
-
 
 .actor-item:hover .buttons {
   opacity: 1;
@@ -115,8 +117,12 @@ code {
   visibility: visible;
 }
 
-.actors, .movies {
+.actors {
   display: flex;
+}
+.movies {
+  display: flex;
+  flex-direction: column;
 }
 
 /* Button Styles */
@@ -166,7 +172,9 @@ code {
   border: 1px solid var(--border-color);
   padding: 8px;
   border-radius: 4px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
 }
 
 .movie-item:hover,
@@ -175,7 +183,6 @@ code {
   cursor: pointer;
   transform: scale(1.02);
 }
-
 
 .actor-surname {
   margin-left: 8px;
@@ -325,3 +332,29 @@ code {
   }
 }
 
+/* Clickable Movie Title */
+.movie-header {
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.movie-header:hover {
+  color: var(--primary-color);
+}
+
+/* Accordion Description */
+.movie-description {
+  max-height: 0;
+  overflow: hidden;
+  transition:
+    max-height 0.3s ease-out,
+    opacity 0.3s ease-out;
+  opacity: 0;
+}
+
+.movie-description.expanded {
+  max-height: 200px; /* Adjust as needed */
+  opacity: 1;
+  padding-top: 8px;
+}

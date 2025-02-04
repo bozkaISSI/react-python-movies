@@ -9,7 +9,6 @@ export default function ActorsListItem({ actor, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMovies, setSelectedMovies] = useState([]);
   const [movies, setMovies] = useState([]);
-  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -24,41 +23,38 @@ export default function ActorsListItem({ actor, onDelete }) {
     };
 
     const fetchActorMovies = async () => {
-  try {
-    if (!actor?.id) {
-      throw new Error("Actor ID is missing");
-    }
-    console.log("Fetching movies for actor ID:", actor.id);
+      try {
+        if (!actor?.id) {
+          throw new Error("Actor ID is missing");
+        }
+        console.log("Fetching movies for actor ID:", actor.id);
 
-    const response = await fetch(`/actors/${actor.id}/movies`);
+        const response = await fetch(`/actors/${actor.id}/movies`);
 
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Failed to fetch actor movies: ${errorText}`);
+        }
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to fetch actor movies: ${errorText}`);
-    }
+        let data;
+        try {
+          data = await response.json();
+        } catch (error) {
+          throw new Error("Failed to parse JSON response from server.");
+        }
 
+        console.log("Fetched movies:", data);
 
-    let data;
-    try {
-      data = await response.json();
-    } catch (error) {
-      throw new Error("Failed to parse JSON response from server.");
-    }
+        if (data.length === 0) {
+          console.log("No movies found for this actor, ignoring...");
+          return;
+        }
 
-    console.log("Fetched movies:", data);
-
-    if (data.length === 0) {
-      console.log("No movies found for this actor, ignoring...");
-      return;
-    }
-
-    setSelectedMovies(data.map((movie) => movie.id));
-  } catch (error) {
-    console.error("Error fetching actor movies:", error.message);
-  }
-};
-
+        setSelectedMovies(data.map((movie) => movie.id));
+      } catch (error) {
+        console.error("Error fetching actor movies:", error.message);
+      }
+    };
 
     fetchMovies();
     fetchActorMovies();
