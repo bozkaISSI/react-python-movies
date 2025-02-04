@@ -112,7 +112,7 @@ export default function ActorsListItem({ actor, onDelete }) {
 
   return (
     <div className="main-container">
-      <div className="buttons">
+      <div className="actors">
         <span>{actor.name}</span>
         <strong className="actor-surname">{actor.surname}</strong>
         <div

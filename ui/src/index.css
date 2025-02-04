@@ -98,6 +98,25 @@ code {
 
 .buttons {
   display: flex;
+  gap: 5px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+
+.actor-item:hover .buttons {
+  opacity: 1;
+  visibility: visible;
+}
+
+.movie-item:hover .buttons {
+  opacity: 1;
+  visibility: visible;
+}
+
+.actors, .movies {
+  display: flex;
 }
 
 /* Button Styles */
@@ -105,11 +124,8 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 10px;
-  margin-left: 10px;
   color: var(--primary-color);
   cursor: pointer;
-  padding: 5px 10px;
   border-radius: 5px;
 }
 
@@ -117,9 +133,7 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 15px;
   cursor: pointer;
-  padding: 5px 10px;
   border-radius: 5px;
 }
 
@@ -310,3 +324,4 @@ code {
     background-color: #e0e0e0;
   }
 }
+

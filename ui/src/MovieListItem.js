@@ -24,7 +24,7 @@ export default function MovieListItem({ movie, onDelete, onEdit }) {
 
   return (
     <div className="main-container">
-      <div className="movie">
+      <div className="movies">
         <div>
           <strong>{movie.title}</strong>
           <span className="movie-year">({movie.year})</span>
