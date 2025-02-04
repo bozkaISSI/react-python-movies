@@ -9,6 +9,7 @@ export default function ActorsListItem({ actor, onDelete }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMovies, setSelectedMovies] = useState([]);
   const [movies, setMovies] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -23,15 +24,41 @@ export default function ActorsListItem({ actor, onDelete }) {
     };
 
     const fetchActorMovies = async () => {
-      try {
-        const response = await fetch(`/actors/${actor.id}/movies`);
-        if (!response.ok) throw new Error("Failed to fetch actor movies");
-        const data = await response.json();
-        setSelectedMovies(data.map((movie) => movie.id));
-      } catch (error) {
-        console.error("Error fetching actor movies:", error);
-      }
-    };
+  try {
+    if (!actor?.id) {
+      throw new Error("Actor ID is missing");
+    }
+    console.log("Fetching movies for actor ID:", actor.id);
+
+    const response = await fetch(`/actors/${actor.id}/movies`);
+
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to fetch actor movies: ${errorText}`);
+    }
+
+
+    let data;
+    try {
+      data = await response.json();
+    } catch (error) {
+      throw new Error("Failed to parse JSON response from server.");
+    }
+
+    console.log("Fetched movies:", data);
+
+    if (data.length === 0) {
+      console.log("No movies found for this actor, ignoring...");
+      return;
+    }
+
+    setSelectedMovies(data.map((movie) => movie.id));
+  } catch (error) {
+    console.error("Error fetching actor movies:", error.message);
+  }
+};
+
 
     fetchMovies();
     fetchActorMovies();
@@ -73,7 +100,7 @@ export default function ActorsListItem({ actor, onDelete }) {
       buttons: [
         {
           label: "Yes",
-          onClick: () => onDelete(actor.id), // Pass the actor id to the onDelete function
+          onClick: () => onDelete(actor.id),
         },
         {
           label: "No",
@@ -111,7 +138,6 @@ export default function ActorsListItem({ actor, onDelete }) {
           </Tooltip>
         </div>
       </div>
-
       <div className="buttons">
         <div
           className="button-add-to-movie"

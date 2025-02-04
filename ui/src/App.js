@@ -41,19 +41,23 @@ function App() {
   };
 
   useEffect(() => {
-    fetchData(
-      "/movies",
-      setMovies,
-      setIsLoadingMovies,
-      "Error fetching movies",
-    );
-    fetchData(
-      "/actors",
-      setActors,
-      setIsLoadingActors,
-      "Error fetching actors",
-    );
-  }, []);
+    if (isLoadingMovies) {
+      fetchData(
+        "/movies",
+        setMovies,
+        setIsLoadingMovies,
+        "Error fetching movies",
+      );
+    }
+    if (isLoadingActors) {
+      fetchData(
+        "/actors",
+        setActors,
+        setIsLoadingActors,
+        "Error fetching actors",
+      );
+    }
+  }, [isLoadingMovies, isLoadingActors]);
 
   const addData = async (url, data, setState, setToggling, errorMessage) => {
     try {

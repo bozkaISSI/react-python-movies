@@ -4,9 +4,15 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 import schemas
 import models
+from pydantic import BaseModel
+import logging
 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="../ui/build/static", check_dir=False), name="static")
+app.mount(
+    "/static",
+    StaticFiles(directory="../ui/build/static", check_dir=False),
+    name="static",
+)
 
 
 @app.get("/")
@@ -32,9 +38,6 @@ def get_movie(movie_id: int):
     if db_movie is None:
         raise HTTPException(status_code=404, detail="Movie not found")
     return db_movie
-
-
-import logging
 
 
 @app.put("/movies/{movie_id}", response_model=schemas.Movie)
@@ -95,13 +98,15 @@ def get_actor_movies(actor_id: int):
     if db_actor is None:
         raise HTTPException(status_code=404, detail="Actor not found")
 
-    return list(db_actor.movies)
+    movies = list(db_actor.movies)
+    if not movies:
+        return []
+    return movies
 
-from pydantic import BaseModel
-from typing import List
 
 class AssignMoviesRequest(BaseModel):
     movieIds: List[int]
+
 
 @app.post("/actors/{actor_id}/movies")
 def assign_movies_to_actor(actor_id: int, request: AssignMoviesRequest):
@@ -111,11 +116,8 @@ def assign_movies_to_actor(actor_id: int, request: AssignMoviesRequest):
 
     movies = list(models.Movie.select().where(models.Movie.id.in_(request.movieIds)))
 
-    # Clear existing movies and add new ones
     db_actor.movies.clear()
     for movie in movies:
         db_actor.movies.add(movie)
 
     return {"message": f"Movies assigned to actor {db_actor.name} {db_actor.surname}"}
-
-
