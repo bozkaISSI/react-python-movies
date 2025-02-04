@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
 export default function MovieForm(props) {
-  const [title, setTitle] = useState(props.movie ? props.movie.title : "");
-  const [year, setYear] = useState(props.movie ? props.movie.year : "");
-  const [director, setDirector] = useState(
-    props.movie ? props.movie.director : "",
-  );
-  const [description, setDescription] = useState(
-    props.movie ? props.movie.description : "",
-  );
+  const [title, setTitle] = useState("");
+  const [year, setYear] = useState("");
+  const [director, setDirector] = useState("");
+  const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    if (props.movie) {
+      setTitle(props.movie.title || "");
+      setYear(props.movie.year || "");
+      setDirector(props.movie.director || "");
+      setDescription(props.movie.description || "");
+    }
+  }, [props.movie]);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -36,7 +41,9 @@ export default function MovieForm(props) {
 
     props.onMovieSubmit({ title, year, director, description });
 
-    toast.success(`Movie "${title}" updated successfully!`);
+    toast.success(
+      `Movie "${title}" ${props.movie ? "updated" : "added"} successfully!`,
+    );
 
     setTitle("");
     setYear("");
@@ -46,7 +53,7 @@ export default function MovieForm(props) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>{props.buttonLabel || "Add Movie"}</h2>
+      <h2>{props.buttonLabel || (props.movie ? "Edit Movie" : "Add Movie")}</h2>
 
       <div>
         <label>Title</label>
@@ -89,7 +96,9 @@ export default function MovieForm(props) {
         />
       </div>
 
-      <button>{props.buttonLabel || "Submit"}</button>
+      <button>
+        {props.buttonLabel || (props.movie ? "Save Changes" : "Submit")}
+      </button>
     </form>
   );
 }

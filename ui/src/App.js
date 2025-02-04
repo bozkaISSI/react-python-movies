@@ -7,6 +7,8 @@ import ActorForm from "./ActorForm";
 import ActorList from "./ActorList";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 function App() {
   const [movies, setMovies] = useState([]);
@@ -70,6 +72,24 @@ function App() {
     }
   };
 
+  const updateData = async (url, id, data, setState, errorMessage) => {
+    try {
+      const response = await fetch(`${url}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok)
+        throw new Error(`${errorMessage}: ${response.statusText}`);
+      const updatedItem = await response.json();
+      setState((prev) =>
+        prev.map((item) => (item.id === updatedItem.id ? updatedItem : item)),
+      );
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   const deleteData = async (url, id, setState, errorMessage) => {
     try {
       const response = await fetch(`${url}/${id}`, { method: "DELETE" });
@@ -103,10 +123,7 @@ function App() {
       <div className="row">
         <div className="column column-100" style={{ position: "relative" }}>
           {isLoadingMovies ? (
-            <div className="lds-ripple">
-              <div></div>
-              <div></div>
-            </div>
+            <Skeleton count={5} height={40} />
           ) : (
             <>
               {movies.length === 0 ? (
@@ -133,10 +150,7 @@ function App() {
 
         <div className="column column-100" style={{ position: "relative" }}>
           {isLoadingActors ? (
-            <div className="lds-ripple">
-              <div></div>
-              <div></div>
-            </div>
+            <Skeleton count={5} height={40} />
           ) : (
             <>
               {actors.length === 0 ? (
@@ -165,7 +179,15 @@ function App() {
           <div className="modal-content">
             {editingMovie && currentMovie ? (
               <MovieForm
-                onMovieSubmit={handleEditMovie}
+                onMovieSubmit={(movie) =>
+                  updateData(
+                    "/movies",
+                    currentMovie.id,
+                    movie,
+                    setMovies,
+                    "Error updating movie",
+                  )
+                }
                 buttonLabel="Save changes"
                 movie={currentMovie}
               />
@@ -181,6 +203,7 @@ function App() {
                   )
                 }
                 buttonLabel="Add a Movie"
+                movie={{}}
               />
             )}
             <button onClick={closeMovieForm}>Close</button>
