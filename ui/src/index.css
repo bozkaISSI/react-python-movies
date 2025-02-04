@@ -152,7 +152,16 @@ code {
   border: 1px solid var(--border-color);
   padding: 8px;
   border-radius: 4px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
+
+.movie-item:hover,
+.actor-item:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transform: scale(1.02);
+}
+
 
 .actor-surname {
   margin-left: 8px;
