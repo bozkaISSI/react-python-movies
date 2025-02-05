@@ -1,16 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-  // Removed React.StrictMode
-  <App />,
-);
+const RootComponent = () => {
+  const [loading, setLoading] = useState(true);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return loading ? (
+    <div className="loader-container">
+      <div className="film-reel">
+        <div className="reel"></div>
+        <div className="reel"></div>
+      </div>
+      <p className="loading-text">Loading your movie...</p>
+    </div>
+  ) : (
+    <App />
+  );
+};
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<RootComponent />);
+
 reportWebVitals();

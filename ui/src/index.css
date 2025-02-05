@@ -321,3 +321,69 @@ code {
     background-color: #e0e0e0;
   }
 }
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: white;
+  color: #9b4dca;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.film-reel {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.reel {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 8px solid #9b4dca;
+  border-top-color: transparent;
+  position: relative;
+  animation: spin 1.5s linear infinite;
+}
+
+.reel::before,
+.reel::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: #9b4dca;
+  position: absolute;
+  border-radius: 50%;
+}
+
+.reel::before {
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.reel::after {
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.loading-text {
+  font-size: 18px;
+  margin-top: 15px;
+  animation: flicker 2s infinite;
+  font-weight: bold;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
